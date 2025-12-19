@@ -1,66 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Star, Search, Facebook, Instagram, Phone, X, Check } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShoppingCart, Star, Search, Facebook, Instagram, Phone, X, Check, ChevronRight, ArrowRight } from 'lucide-react';
 
 const App = () => {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [category, setCategory] = useState('Todos');
+  const [activeCategory, setActiveCategory] = useState('Todos');
 
+  // Datos de los productos del catálogo
   const products = [
     {
       id: 1,
       name: "Paleta Golden Blush",
       category: "Maquillaje",
       price: 85.00,
-      description: "Tonos tierra y dorados para un acabado radiante.",
+      description: "Pigmentación profesional con destellos de oro de 24k para un acabado de alfombra roja.",
       rating: 5,
-      image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=400"
+      image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=600"
     },
     {
       id: 2,
       name: "Perfume Aura Noir",
       category: "Fragancias",
       price: 120.00,
-      description: "Fragancia intensa con notas de jazmín y sándalo.",
+      description: "Esencia mística que combina la vainilla negra con notas amaderadas profundas.",
       rating: 5,
-      image: "https://images.unsplash.com/photo-1544467316-1974514624ae?auto=format&fit=crop&q=80&w=400"
+      image: "https://images.unsplash.com/photo-1544467316-1974514624ae?auto=format&fit=crop&q=80&w=600"
     },
     {
       id: 3,
       name: "Labial Velvet Gold",
       category: "Maquillaje",
       price: 45.00,
-      description: "Mate de larga duración con micro-partículas de brillo.",
+      description: "Textura sedosa que no reseca los labios. Color intenso desde la primera aplicación.",
       rating: 4,
-      image: "https://images.unsplash.com/photo-1586776977607-310e9c725c37?auto=format&fit=crop&q=80&w=400"
+      image: "https://images.unsplash.com/photo-1586776977607-310e9c725c37?auto=format&fit=crop&q=80&w=600"
     },
     {
       id: 4,
       name: "Collar Perlas Imperiales",
       category: "Accesorios",
       price: 150.00,
-      description: "Perlas seleccionadas con broche bañado en oro.",
+      description: "Elegancia clásica reinterpretada para la mujer moderna. Broche artesanal.",
       rating: 5,
-      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400"
+      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600"
     },
     {
       id: 5,
       name: "Base Iluminadora",
       category: "Maquillaje",
       price: 75.00,
-      description: "Cobertura media con efecto seda natural.",
+      description: "Tu piel, pero mejor. Efecto filtro instantáneo con hidratación 24 horas.",
       rating: 4,
-      image: "https://images.unsplash.com/photo-1631730359585-38a4935cbb4e?auto=format&fit=crop&q=80&w=400"
+      image: "https://images.unsplash.com/photo-1631730359585-38a4935cbb4e?auto=format&fit=crop&q=80&w=600"
     },
     {
       id: 6,
-      name: "Set de Brochas Golden",
+      name: "Anillo Gala Oro",
       category: "Accesorios",
-      price: 95.00,
-      description: "8 piezas profesionales con estuche de cuero sintético.",
+      price: 210.00,
+      description: "Diseño minimalista pero impactante. Baño de oro de 18k de alta durabilidad.",
       rating: 5,
-      image: "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&q=80&w=400"
+      image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600"
     }
   ];
 
@@ -77,172 +78,200 @@ const App = () => {
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   const filteredProducts = products.filter(p => 
-    (category === 'Todos' || p.category === category) &&
+    (activeCategory === 'Todos' || p.category === activeCategory) &&
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="min-h-screen bg-neutral-900 text-amber-50 font-sans">
-      {/* Header Estilo Luxury */}
-      <header className="sticky top-0 z-50 bg-black/90 border-b border-amber-600/30 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-center md:text-left">
-            <h1 className="text-3xl font-serif font-bold tracking-widest text-amber-400">GOLDEN AURA</h1>
-            <p className="text-xs uppercase tracking-[0.3em] text-amber-200/70">Belleza y Elegancia a tu Alcance</p>
+    <div className="min-h-screen bg-[#0a0a0a] text-stone-200 font-light selection:bg-amber-500 selection:text-black">
+      {/* Navegación */}
+      <nav className="fixed top-0 w-full z-[100] bg-black/80 backdrop-blur-xl border-b border-white/5">
+        <div className="max-w-[1440px] mx-auto px-6 h-20 flex justify-between items-center">
+          <div className="flex items-center gap-12">
+            <div className="flex flex-col">
+              <span className="text-2xl font-serif font-bold tracking-[0.2em] text-amber-500 leading-none">GOLDEN AURA</span>
+              <span className="text-[10px] tracking-[0.4em] uppercase text-stone-500 mt-1">SAYDA JOSEFINA GONZALES</span>
+            </div>
+            <div className="hidden lg:flex items-center gap-8 text-xs uppercase tracking-widest text-stone-400">
+              {['Todos', 'Maquillaje', 'Fragancias', 'Accesorios'].map(cat => (
+                <button 
+                  key={cat} 
+                  onClick={() => setActiveCategory(cat)}
+                  className={`hover:text-amber-500 transition-colors ${activeCategory === cat ? 'text-amber-500 font-bold underline underline-offset-8' : ''}`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="flex items-center gap-4 w-full md:w-auto">
-            <div className="relative flex-1">
+          <div className="flex items-center gap-6">
+            <div className="relative hidden md:block">
               <input 
                 type="text" 
-                placeholder="Buscar producto..." 
-                className="w-full bg-neutral-800 border border-amber-900 rounded-full py-2 px-10 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
+                placeholder="BUSCAR..." 
+                className="bg-transparent border-b border-stone-800 py-1 text-xs tracking-widest focus:outline-none focus:border-amber-500 w-40"
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-amber-600" />
+              <Search className="absolute right-0 top-1 w-3 h-3 text-stone-600" />
             </div>
-            
+            <button onClick={() => setIsCartOpen(true)} className="group flex items-center gap-2">
+              <div className="relative">
+                <ShoppingCart className="w-5 h-5 group-hover:text-amber-500 transition-colors" />
+                {cart.length > 0 && (
+                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-amber-500 text-[10px] text-black font-bold flex items-center justify-center rounded-full">
+                    {cart.length}
+                  </span>
+                )}
+              </div>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <header className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-[#0a0a0a]"></div>
+          <img 
+            src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=1920" 
+            className="w-full h-full object-cover opacity-50"
+            alt="Beauty Banner"
+          />
+        </div>
+        
+        <div className="relative z-10 text-center space-y-6 max-w-4xl px-6 pt-20">
+          <p className="text-amber-500 uppercase tracking-[0.5em] text-xs font-medium italic">Atención todos los días</p>
+          <h1 className="text-6xl md:text-8xl font-serif italic text-white leading-tight">Golden Aura</h1>
+          <p className="text-stone-300 max-w-lg mx-auto text-sm leading-relaxed uppercase tracking-widest">
+            Belleza y Elegancia a tu Alcance
+          </p>
+          <div className="pt-8">
             <button 
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-2 bg-amber-600 rounded-full hover:bg-amber-500 transition-colors"
+              onClick={() => document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'})}
+              className="px-10 py-4 border border-amber-600 text-amber-500 hover:bg-amber-600 hover:text-black font-bold text-xs uppercase tracking-[0.3em] transition-all"
             >
-              <ShoppingCart className="w-6 h-6 text-black" />
-              {cart.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-black">
-                  {cart.length}
-                </span>
-              )}
+              Ver Catálogo
             </button>
           </div>
         </div>
       </header>
 
-      {/* Hero Banner */}
-      <section className="relative h-[40vh] bg-gradient-to-r from-black via-amber-950 to-black flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-        <div className="text-center z-10 px-4">
-          <h2 className="text-4xl md:text-5xl font-serif text-amber-300 mb-2">Sayda Josefina Gonzales Marcas</h2>
-          <div className="h-1 w-24 bg-amber-500 mx-auto mb-4"></div>
-          <p className="text-amber-100 italic text-lg font-light">Atención: Todos los días</p>
-        </div>
-      </section>
-
-      {/* Categorías */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
-          {['Todos', 'Maquillaje', 'Fragancias', 'Accesorios'].map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className={`px-6 py-2 rounded-full border border-amber-600/50 transition-all ${category === cat ? 'bg-amber-600 text-black' : 'hover:bg-amber-900/40'}`}
-            >
-              {cat}
-            </button>
-          ))}
+      {/* Catálogo Section */}
+      <section id="catalogo" className="py-24 px-6 max-w-[1440px] mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-serif italic text-white">Nuestra Colección</h2>
+          <div className="h-px w-20 bg-amber-600 mx-auto mt-4"></div>
         </div>
 
-        {/* Grid de Productos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {filteredProducts.map((product) => (
-            <div key={product.id} className="group bg-neutral-800 rounded-xl overflow-hidden border border-amber-900/20 hover:border-amber-500/50 transition-all duration-300 shadow-xl">
-              <div className="relative h-64 overflow-hidden">
+            <div key={product.id} className="group flex flex-col">
+              <div className="relative aspect-[4/5] bg-stone-900 overflow-hidden mb-6 rounded-sm">
                 <img 
                   src={product.image} 
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-amber-400 text-xs font-bold">
-                  {product.category}
-                </div>
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+                <button 
+                  onClick={() => addToCart(product)}
+                  className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-black px-8 py-3 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl"
+                >
+                  Agregar +
+                </button>
               </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-serif text-amber-100">{product.name}</h3>
-                  <div className="flex text-amber-500">
-                    {[...Array(product.rating)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
-                  </div>
-                </div>
-                <p className="text-neutral-400 text-sm mb-4 line-clamp-2">{product.description}</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-amber-400">S/ {product.price.toFixed(2)}</span>
-                  <button 
-                    onClick={() => addToCart(product)}
-                    className="bg-amber-600 hover:bg-amber-500 text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors"
-                  >
-                    Agregar <Check className="w-4 h-4" />
-                  </button>
-                </div>
+              <div className="space-y-2 text-center">
+                <span className="text-[10px] uppercase tracking-widest text-amber-600">{product.category}</span>
+                <h3 className="text-lg uppercase tracking-tight text-white">{product.name}</h3>
+                <p className="text-xl font-serif text-amber-500">S/ {product.price.toFixed(2)}</p>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Footer */}
-      <footer className="bg-black py-16 mt-20 border-t border-amber-900/50">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-serif text-amber-400 mb-8 tracking-widest uppercase">Contáctanos</h2>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-12">
-            <a href="#" className="flex items-center gap-3 text-amber-200 hover:text-white transition-colors">
-              <Facebook className="w-6 h-6 text-blue-500" /> /GoldenAura_Peru
+      {/* Footer / Contacto */}
+      <footer className="bg-black py-20 px-6 border-t border-white/5 mt-20">
+        <div className="max-w-4xl mx-auto text-center space-y-12">
+          <div className="space-y-4">
+            <h4 className="text-2xl font-serif font-bold tracking-widest text-amber-500">CONTACTO</h4>
+            <p className="text-xs text-stone-500 uppercase tracking-widest italic">Abierto todos los días de la semana</p>
+          </div>
+          
+          <div className="flex flex-wrap justify-center gap-12">
+            <a href="#" className="flex flex-col items-center gap-3 group">
+              <div className="p-4 rounded-full border border-stone-800 group-hover:border-amber-500 transition-colors">
+                <Instagram className="w-5 h-5 text-amber-600" />
+              </div>
+              <span className="text-[10px] tracking-widest">@goldenaura_sjg</span>
             </a>
-            <a href="#" className="flex items-center gap-3 text-amber-200 hover:text-white transition-colors">
-              <Instagram className="w-6 h-6 text-pink-500" /> @goldenaura_sjg
+            <a href="#" className="flex flex-col items-center gap-3 group">
+              <div className="p-4 rounded-full border border-stone-800 group-hover:border-amber-500 transition-colors">
+                <Facebook className="w-5 h-5 text-amber-600" />
+              </div>
+              <span className="text-[10px] tracking-widest">/GoldenAura_Peru</span>
             </a>
-            <a href="#" className="flex items-center gap-3 text-amber-200 hover:text-white transition-colors">
-              <Phone className="w-6 h-6 text-green-500" /> Cell: 987 654 321
+            <a href="#" className="flex flex-col items-center gap-3 group">
+              <div className="p-4 rounded-full border border-stone-800 group-hover:border-amber-500 transition-colors">
+                <Phone className="w-5 h-5 text-amber-600" />
+              </div>
+              <span className="text-[10px] tracking-widest">987 654 321</span>
             </a>
           </div>
-          <p className="text-neutral-600 text-xs">© 2025 Golden Aura. Todos los derechos reservados. Elegancia garantizada.</p>
+          
+          <div className="pt-10 border-t border-stone-900">
+            <p className="text-[9px] tracking-[0.5em] text-stone-700">© 2025 GOLDEN AURA BY SAYDA JOSEFINA</p>
+          </div>
         </div>
       </footer>
 
-      {/* Carrito Sidebar */}
+      {/* Lateral Cart */}
       {isCartOpen && (
-        <div className="fixed inset-0 z-[60] flex justify-end">
-          <div className="absolute inset-0 bg-black/80" onClick={() => setIsCartOpen(false)}></div>
-          <div className="relative w-full max-w-md bg-neutral-900 h-full shadow-2xl p-6 border-l border-amber-900/50 flex flex-col">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-serif text-amber-400">Tu Carrito</h2>
-              <button onClick={() => setIsCartOpen(false)}><X className="w-6 h-6" /></button>
+        <div className="fixed inset-0 z-[200] flex justify-end">
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={() => setIsCartOpen(false)}></div>
+          <div className="relative w-full max-w-md bg-[#0d0d0d] h-full p-8 flex flex-col border-l border-white/5 animate-in slide-in-from-right duration-300">
+            <div className="flex justify-between items-center mb-12">
+              <h2 className="text-2xl font-serif italic text-white">Mi Selección</h2>
+              <button onClick={() => setIsCartOpen(false)} className="hover:rotate-90 transition-transform"><X className="w-6 h-6 text-stone-500" /></button>
             </div>
 
-            <div className="flex-1 overflow-y-auto space-y-4">
+            <div className="flex-1 overflow-y-auto space-y-6">
               {cart.length === 0 ? (
-                <p className="text-center text-neutral-500 mt-20 italic">Tu bolsa de compras está vacía.</p>
+                <div className="h-full flex flex-col items-center justify-center opacity-30">
+                  <ShoppingCart className="w-10 h-10 mb-4" />
+                  <p className="text-[10px] uppercase tracking-widest">La bolsa está vacía</p>
+                </div>
               ) : (
                 cart.map((item, index) => (
-                  <div key={index} className="flex gap-4 bg-neutral-800 p-3 rounded-lg border border-amber-900/20">
-                    <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
+                  <div key={index} className="flex gap-4 items-center animate-in fade-in slide-in-from-bottom-2">
+                    <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-sm" />
                     <div className="flex-1">
-                      <h4 className="text-amber-100 font-medium">{item.name}</h4>
-                      <p className="text-amber-400 font-bold">S/ {item.price.toFixed(2)}</p>
-                      <button 
-                        onClick={() => removeFromCart(index)}
-                        className="text-red-400 text-xs mt-2 underline"
-                      >
-                        Quitar
-                      </button>
+                      <h4 className="text-[11px] uppercase tracking-widest text-stone-200">{item.name}</h4>
+                      <p className="text-amber-500 font-serif">S/ {item.price.toFixed(2)}</p>
                     </div>
+                    <button onClick={() => removeFromCart(index)} className="text-stone-700 hover:text-red-800 transition-colors">
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
                 ))
               )}
             </div>
 
             {cart.length > 0 && (
-              <div className="mt-8 border-t border-amber-900/50 pt-6">
-                <div className="flex justify-between text-xl mb-6">
-                  <span className="text-neutral-400">Total:</span>
-                  <span className="text-amber-400 font-bold font-serif text-2xl">S/ {total.toFixed(2)}</span>
+              <div className="mt-8 space-y-6 border-t border-stone-900 pt-6">
+                <div className="flex justify-between items-baseline">
+                  <span className="text-[10px] uppercase tracking-widest text-stone-500">Total a pagar</span>
+                  <span className="text-3xl font-serif text-white">S/ {total.toFixed(2)}</span>
                 </div>
                 <button 
-                  className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(217,119,6,0.3)]"
+                  className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-5 text-[10px] uppercase tracking-[0.4em] transition-all"
                   onClick={() => {
-                    const message = `Hola! Me gustaría pedir:\n${cart.map(i => `- ${i.name} (S/ ${i.price})`).join('\n')}\nTotal: S/ ${total}`;
+                    const message = `Hola Golden Aura! Me gustaría solicitar:\n${cart.map(i => `• ${i.name} (S/ ${i.price})`).join('\n')}\n\nTotal: S/ ${total.toFixed(2)}`;
                     window.open(`https://wa.me/51987654321?text=${encodeURIComponent(message)}`);
                   }}
                 >
-                  Confirmar Pedido vía WhatsApp
+                  Enviar Pedido a WhatsApp
                 </button>
               </div>
             )}
